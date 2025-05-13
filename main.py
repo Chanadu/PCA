@@ -159,7 +159,7 @@ def custom_pca(X: np.ndarray, dataset_labels: np.ndarray, n_components: int = 2)
     plt.xticks([])
     plt.ylabel('PC2')
     plt.yticks([])
-    plt.title('2 components, captures {}% of total variation'.format(
+    plt.title('Custom: 2 components, captures {}% of total variation'.format(
         (pca.cum_explained_variance[1] * 100).round(2)))
     # plt.show()
 
@@ -189,7 +189,7 @@ def builtin_pca(X: np.ndarray, dataset_labels: np.ndarray):
     plt.xticks([])
     plt.ylabel('PC2')
     plt.yticks([])
-    plt.title('2 components, captures {}% of total variation'.format(
+    plt.title('Builtin: 2 components, captures {}% of total variation'.format(
         cum_explained_variance[1].round(4)*100))
     # plt.show()
 
