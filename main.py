@@ -1,4 +1,3 @@
-# importing required libraries
 from typing import Tuple
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
@@ -45,9 +44,6 @@ class MyPCA:
 
     def __init__(self, num_components: int):
         self.num_components = num_components
-        # self.components = None
-        # self.mean = None
-        # self.variance_share = None
 
     def fit(self, data: np.ndarray):
         # Standardize data
@@ -65,17 +61,34 @@ class MyPCA:
         # Computes the eignenvalues and eigenvectors of the covariance matrix
         eig_vals, eig_vecs = np.linalg.eig(cov_mat)
 
-        # Sort the eigenvalues and eigenvectors
-        sort_idx = np.argsort(eig_vals)[::-1]
-        values = eig_vals[sort_idx]
-        vectors = eig_vecs[:, sort_idx]
+        # # Sort the eigenvalues and eigenvectors
+        # sort_idx = np.argsort(eig_vals)[::-1]
+        # values = eig_vals[sort_idx]
+        # vectors = eig_vecs[:, sort_idx]
 
-        # Select the top k eigenvalues and eigenvectors
-        self.components = vectors[:self.num_components]
-        self.variance_share = np.sum(
-            values[:self.num_components]) / np.sum(values)
-        self.explained_variance_ratio = values[:
-                                               self.num_components] / np.sum(values)
+        # # Select the top k eigenvalues and eigenvectors
+        # self.components = vectors[:self.num_components]
+        # self.explained_variance_ratio = values[:
+        #                                        self.num_components] / np.sum(values)
+        # self.cum_explained_variance = np.cumsum(self.explained_variance_ratio)
+
+        max_abs_idx = np.argmax(np.abs(eig_vecs), axis=0)
+        signs = np.sign(eig_vecs[max_abs_idx, range(eig_vecs.shape[0])])
+        eig_vecs = eig_vecs*signs[np.newaxis, :]
+        eig_vecs = eig_vecs.T
+
+        eig_pairs = [(np.abs(eig_vals[i]), eig_vecs[i, :])
+                     for i in range(len(eig_vals))]
+        eig_pairs.sort(key=lambda x: x[0], reverse=True)
+        eig_vals_sorted = np.array([x[0] for x in eig_pairs])
+        eig_vecs_sorted = np.array([x[1] for x in eig_pairs])
+
+        self.components = eig_vecs_sorted[:self.num_components, :]
+
+        # Explained variance ratio
+        self.explained_variance_ratio = [
+            i/np.sum(eig_vals) for i in eig_vals_sorted[:self.num_components]]
+
         self.cum_explained_variance = np.cumsum(self.explained_variance_ratio)
 
         return self
@@ -83,8 +96,6 @@ class MyPCA:
     def transform(self, data):
         data = data.copy()
         data_std = (data - self.mean) / self.scale
-
-        # data_proj = data_std.dot(self.components.T)
 
         return np.dot(data_std, self.components.T)
 
@@ -114,16 +125,12 @@ def read_csv_file(dataset1_paths: list, dataset2_paths: list) -> Tuple[np.ndarra
         combined_df = pd.concat([combined_df, df], ignore_index=True)
         labels.extend([1] * len(df))  # Label rows from the second dataset as 1
 
-    # df = pd.read_csv(file_path, header=None)
-    # df = pd.read_csv(file_path, header=None, skiprows=1)
-    # df = df.dropna(axis=1)
-
-    print(combined_df.head())
-    # Check the column names and indices
-    print("Columns in the dataset:", combined_df.columns)
-    # Check for missing or invalid values
-    print("Any NaN values in the dataset:", combined_df.isnull().any().any())
-    print("Any inf values in the dataset:", np.isinf(combined_df.values).any())
+    # print(combined_df.head())
+    # # Check the column names and indices
+    # print("Columns in the dataset:", combined_df.columns)
+    # # Check for missing or invalid values
+    # print("Any NaN values in the dataset:", combined_df.isnull().any().any())
+    # print("Any inf values in the dataset:", np.isinf(combined_df.values).any())
 
     return combined_df.values, np.array(labels)
 
@@ -154,8 +161,7 @@ def custom_pca(X: np.ndarray, dataset_labels: np.ndarray, n_components: int = 2)
     plt.yticks([])
     plt.title('2 components, captures {}% of total variation'.format(
         (pca.cum_explained_variance[1] * 100).round(2)))
-    # plt.colorbar(label='Class')
-    plt.show()
+    # plt.show()
 
 
 def builtin_pca(X: np.ndarray, dataset_labels: np.ndarray):
@@ -185,7 +191,7 @@ def builtin_pca(X: np.ndarray, dataset_labels: np.ndarray):
     plt.yticks([])
     plt.title('2 components, captures {}% of total variation'.format(
         cum_explained_variance[1].round(4)*100))
-    plt.show()
+    # plt.show()
 
 
 dataset1_paths = [
@@ -206,5 +212,13 @@ dataset2_paths = [
 
 X, dataset_labels = read_csv_file(dataset1_paths, dataset2_paths)
 
-# custom_pca(X, dataset_labels)
+
+fig = plt.figure()
+
+plt.subplot(1, 2, 1)
+custom_pca(X, dataset_labels)
+plt.subplot(1, 2, 2)
 builtin_pca(X, dataset_labels)
+
+plt.tight_layout()
+plt.show()
