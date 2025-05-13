@@ -57,6 +57,7 @@ class MyPCA:
 
         # Creates the covariance matrix
         cov_mat = np.cov(data_std.T)
+        print("Covariance Matrix: " + str(cov_mat))
 
         # Computes the eignenvalues and eigenvectors of the covariance matrix
         eig_vals, eig_vecs = np.linalg.eig(cov_mat)
