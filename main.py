@@ -155,11 +155,19 @@ def custom_pca(X: np.ndarray, dataset_labels: np.ndarray, n_components: int = 2)
     X_pca = pca.transform(X)
     print('Transformed data shape from scratch:', X_pca.shape)
 
-    plt.scatter(X_pca[:, 0], X_pca[:, 1], c=dataset_labels)
-    plt.xlabel('PC1')
+    # plt.scatter(X_pca[:, 0], X_pca[:, 1], c=dataset_labels)
+    # plt.xlabel('PC1')
+    # plt.xticks([])
+    # plt.ylabel('PC2')
+    # plt.yticks([])
+    
+    plt.scatter(X_pca[:, 1], X_pca[:, 0], c=dataset_labels)
+    plt.xlabel('PC2')
     plt.xticks([])
-    plt.ylabel('PC2')
+    plt.ylabel('PC1')
     plt.yticks([])
+    
+    
     plt.title('Custom: 2 components, captures {}% of total variation'.format(
         (pca.cum_explained_variance[1] * 100).round(2)))
     # plt.show()
@@ -185,11 +193,18 @@ def builtin_pca(X: np.ndarray, dataset_labels: np.ndarray):
     X_pca = pca.transform(X_std)  # Apply dimensionality reduction to X.
     print('Transformed data shape:', X_pca.shape)
 
-    plt.scatter(X_pca[:, 0], X_pca[:, 1], c=dataset_labels)
-    plt.xlabel('PC1')
+    # plt.scatter(X_pca[:, 0], X_pca[:, 1], c=dataset_labels)
+    # plt.xlabel('PC1')
+    # plt.xticks([])
+    # plt.ylabel('PC2')
+    # plt.yticks([])
+    
+    plt.scatter(X_pca[:, 1], X_pca[:, 0], c=dataset_labels)
+    plt.xlabel('PC2')
     plt.xticks([])
-    plt.ylabel('PC2')
+    plt.ylabel('PC1')
     plt.yticks([])
+    
     plt.title('Builtin: 2 components, captures {}% of total variation'.format(
         cum_explained_variance[1].round(4)*100))
     # plt.show()
@@ -202,6 +217,24 @@ dataset1_paths = [
     './FOCUSDataset/_To Share EEG Data/New EEG Data/ADHD/10/Emotiv/emo zeynep 4.csv',
     './FOCUSDataset/_To Share EEG Data/New EEG Data/ADHD/10/Emotiv/emo zeynep 5.csv',
     './FOCUSDataset/_To Share EEG Data/New EEG Data/ADHD/10/Emotiv/emo zeynep 6.csv',
+    './FOCUSDataset/_To Share EEG Data/New EEG Data/ADHD/7/Emotiv/ayse nur emo 1.csv',
+    './FOCUSDataset/_To Share EEG Data/New EEG Data/ADHD/7/Emotiv/ayse nur emo 2.csv',
+    './FOCUSDataset/_To Share EEG Data/New EEG Data/ADHD/7/Emotiv/ayse nur emo 3.csv',
+    './FOCUSDataset/_To Share EEG Data/New EEG Data/ADHD/7/Emotiv/ayse nur emo 4.csv',
+    './FOCUSDataset/_To Share EEG Data/New EEG Data/ADHD/7/Emotiv/ayse nur emo 5.csv',
+    './FOCUSDataset/_To Share EEG Data/New EEG Data/ADHD/7/Emotiv/ayse nur emo 6.csv',
+    "./FOCUSDataset/_To Share EEG Data/New EEG Data/ADHD/8/Emotiv/Humam emo 1.csv",
+    "./FOCUSDataset/_To Share EEG Data/New EEG Data/ADHD/8/Emotiv/Humam emo 2.csv",
+    "./FOCUSDataset/_To Share EEG Data/New EEG Data/ADHD/8/Emotiv/Humam emo 3.csv",
+    "./FOCUSDataset/_To Share EEG Data/New EEG Data/ADHD/8/Emotiv/Humam emo 4.csv",
+    "./FOCUSDataset/_To Share EEG Data/New EEG Data/ADHD/8/Emotiv/Humam emo 5.csv",
+    "./FOCUSDataset/_To Share EEG Data/New EEG Data/ADHD/8/Emotiv/Humam emo 6.csv",
+    "./FOCUSDataset/_To Share EEG Data/New EEG Data/ADHD/9/Emotiv/emo said 1.csv",
+    "./FOCUSDataset/_To Share EEG Data/New EEG Data/ADHD/9/Emotiv/emo said 2.csv",
+    "./FOCUSDataset/_To Share EEG Data/New EEG Data/ADHD/9/Emotiv/emo said 3.csv",
+    "./FOCUSDataset/_To Share EEG Data/New EEG Data/ADHD/9/Emotiv/emo said 4.csv",
+    "./FOCUSDataset/_To Share EEG Data/New EEG Data/ADHD/9/Emotiv/emo said 5.csv",
+    "./FOCUSDataset/_To Share EEG Data/New EEG Data/ADHD/9/Emotiv/emo said 6.csv",
 ]
 dataset2_paths = [
     './FOCUSDataset/_To Share EEG Data/New EEG Data/Non-ADHD/1/Emotive/abdul_emo1.csv',
@@ -209,9 +242,33 @@ dataset2_paths = [
     './FOCUSDataset/_To Share EEG Data/New EEG Data/Non-ADHD/1/Emotive/abdul_emo3.csv',
     './FOCUSDataset/_To Share EEG Data/New EEG Data/Non-ADHD/1/Emotive/abdul_emo4.csv',
     './FOCUSDataset/_To Share EEG Data/New EEG Data/Non-ADHD/1/Emotive/abdul_emo5.csv',
+    './FOCUSDataset/_To Share EEG Data/New EEG Data/Non-ADHD/2/Emotive/alaa_emo1.csv',
+    './FOCUSDataset/_To Share EEG Data/New EEG Data/Non-ADHD/2/Emotive/alaa_emo2.csv',
+    './FOCUSDataset/_To Share EEG Data/New EEG Data/Non-ADHD/2/Emotive/alaa_emo3.csv',
+    './FOCUSDataset/_To Share EEG Data/New EEG Data/Non-ADHD/2/Emotive/alaa_emo4.csv',
+    './FOCUSDataset/_To Share EEG Data/New EEG Data/Non-ADHD/2/Emotive/alaa_emo5.csv',
+    './FOCUSDataset/_To Share EEG Data/New EEG Data/Non-ADHD/3/Emotive/ali_emo1.csv',
+    './FOCUSDataset/_To Share EEG Data/New EEG Data/Non-ADHD/3/Emotive/ali_emo2.csv',
+    './FOCUSDataset/_To Share EEG Data/New EEG Data/Non-ADHD/3/Emotive/ali_emo3.csv',
+    './FOCUSDataset/_To Share EEG Data/New EEG Data/Non-ADHD/3/Emotive/ali_emo4.csv',
+    './FOCUSDataset/_To Share EEG Data/New EEG Data/Non-ADHD/3/Emotive/ali_emo5.csv',
+    './FOCUSDataset/_To Share EEG Data/New EEG Data/Non-ADHD/4/Emotive/amer_emo1.csv',
+    './FOCUSDataset/_To Share EEG Data/New EEG Data/Non-ADHD/4/Emotive/amer_emo2.csv',
+    './FOCUSDataset/_To Share EEG Data/New EEG Data/Non-ADHD/4/Emotive/amer_emo3.csv',
+    './FOCUSDataset/_To Share EEG Data/New EEG Data/Non-ADHD/4/Emotive/amer_emo4.csv',
+    './FOCUSDataset/_To Share EEG Data/New EEG Data/Non-ADHD/4/Emotive/amer_emo5.csv',
+    './FOCUSDataset/_To Share EEG Data/New EEG Data/Non-ADHD/5/Emotive/sharno_emo1.csv',
+    './FOCUSDataset/_To Share EEG Data/New EEG Data/Non-ADHD/5/Emotive/sharno_emo2.csv',
+    './FOCUSDataset/_To Share EEG Data/New EEG Data/Non-ADHD/5/Emotive/sharno_emo3.csv',
+    './FOCUSDataset/_To Share EEG Data/New EEG Data/Non-ADHD/5/Emotive/sharno_emo4.csv',
+    './FOCUSDataset/_To Share EEG Data/New EEG Data/Non-ADHD/5/Emotive/sharno_emo5.csv',
+    # './FOCUSDataset/_To Share EEG Data/New EEG Data/Non-ADHD/6/Emotiv/sumayya emo 1.csv',
+    # './FOCUSDataset/_To Share EEG Data/New EEG Data/Non-ADHD/6/Emotiv/sumayya emo 2.csv',
 ]
 
 X, dataset_labels = read_csv_file(dataset1_paths, dataset2_paths)
+
+# X, dataset_labels = read_csv_file(dataset1_paths, [])
 
 
 fig = plt.figure()
