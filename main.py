@@ -45,33 +45,19 @@ class MyPCA:
     def __init__(self, num_components: int):
         self.num_components = num_components
 
-    def fit(self, data: np.ndarray):
-        # Standardize data
-        data = data.copy()
-
-        self.mean = np.mean(data, axis=0)
-        self.scale = np.std(data, axis=0)
+    def find_covariance_matrix(self, data: np.ndarray) -> np.ndarray:
+        # Standardize the data
+        self.mean: np.ndarray = np.mean(data, axis=0)
+        self.scale: np.ndarray = np.std(data, axis=0)
         data_std: np.ndarray = (data - self.mean) / self.scale
 
-        # data_std = gram_schmidt(data)
+        covariance_matrix = np.cov(data_std.T)
+        return covariance_matrix
 
-        # Creates the covariance matrix
-        cov_mat = np.cov(data_std.T)
-        print("Covariance Matrix: " + str(cov_mat))
-
-        # Computes the eignenvalues and eigenvectors of the covariance matrix
-        eig_vals, eig_vecs = np.linalg.eig(cov_mat)
-
-        # # Sort the eigenvalues and eigenvectors
-        # sort_idx = np.argsort(eig_vals)[::-1]
-        # values = eig_vals[sort_idx]
-        # vectors = eig_vecs[:, sort_idx]
-
-        # # Select the top k eigenvalues and eigenvectors
-        # self.components = vectors[:self.num_components]
-        # self.explained_variance_ratio = values[:
-        #                                        self.num_components] / np.sum(values)
-        # self.cum_explained_variance = np.cumsum(self.explained_variance_ratio)
+    def find_sorted_eigenvalues_and_eigenvectors(
+            self,
+            covariance_matrix: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+        eig_vals, eig_vecs = np.linalg.eig(covariance_matrix)
 
         max_abs_idx = np.argmax(np.abs(eig_vecs), axis=0)
         signs = np.sign(eig_vecs[max_abs_idx, range(eig_vecs.shape[0])])
@@ -83,12 +69,40 @@ class MyPCA:
         eig_pairs.sort(key=lambda x: x[0], reverse=True)
         eig_vals_sorted = np.array([x[0] for x in eig_pairs])
         eig_vecs_sorted = np.array([x[1] for x in eig_pairs])
+        return eig_vals_sorted, eig_vecs_sorted
 
+    def fit(self, data: np.ndarray):
+        # Standardize data
+        # data = data.copy()
+
+        # data_std = self.standardize(data)
+        # self.mean = np.mean(data, axis=0)
+        # self.scale = np.std(data, axis=0)
+        # data_std: np.ndarray = (data - self.mean) / self.scale
+        #
+        # Creates the covariance matrix
+        # covariance_matrix = np.cov(data_std.T)
+        covariance_matrix = self.find_covariance_matrix(data)
+        print("Covariance Matrix: " + str(covariance_matrix))
+
+        eig_vals_sorted, eig_vecs_sorted = self.find_sorted_eigenvalues_and_eigenvectors(
+            covariance_matrix)
+        # # Sort the eigenvalues and eigenvectors
+        # sort_idx = np.argsort(eig_vals)[::-1]
+        # values = eig_vals[sort_idx]
+        # vectors = eig_vecs[:, sort_idx]
+
+        # # Select the top k eigenvalues and eigenvectors
+        # self.components = vectors[:self.num_components]
+        # self.explained_variance_ratio = values[:
+        #                                        self.num_components] / np.sum(values)
+        # self.cum_explained_variance = np.cumsum(self.explained_variance_ratio)
+        # Computes the eignenvalues and eigenvectors of the covariance matrix
         self.components = eig_vecs_sorted[:self.num_components, :]
 
         # Explained variance ratio
         self.explained_variance_ratio = [
-            i/np.sum(eig_vals) for i in eig_vals_sorted[:self.num_components]]
+            i/np.sum(eig_vals_sorted) for i in eig_vals_sorted[:self.num_components]]
 
         self.cum_explained_variance = np.cumsum(self.explained_variance_ratio)
 
