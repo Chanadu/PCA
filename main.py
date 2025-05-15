@@ -1,4 +1,3 @@
-#arthur saved this project guys he wrote all this code in 5 seconds :0000000000000000000000000000000000000000000
 from typing import Tuple
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
@@ -161,14 +160,13 @@ def custom_pca(X: np.ndarray, dataset_labels: np.ndarray, n_components: int = 2)
     # plt.xticks([])
     # plt.ylabel('PC2')
     # plt.yticks([])
-    
+
     plt.scatter(X_pca[:, 1], X_pca[:, 0], c=dataset_labels)
     plt.xlabel('PC2')
     plt.xticks([])
     plt.ylabel('PC1')
     plt.yticks([])
-    
-    
+
     plt.title('Custom: 2 components, captures {}% of total variation'.format(
         (pca.cum_explained_variance[1] * 100).round(2)))
     # plt.show()
@@ -199,13 +197,13 @@ def builtin_pca(X: np.ndarray, dataset_labels: np.ndarray):
     # plt.xticks([])
     # plt.ylabel('PC2')
     # plt.yticks([])
-    
+
     plt.scatter(X_pca[:, 1], X_pca[:, 0], c=dataset_labels)
     plt.xlabel('PC2')
     plt.xticks([])
     plt.ylabel('PC1')
     plt.yticks([])
-    
+
     plt.title('Builtin: 2 components, captures {}% of total variation'.format(
         cum_explained_variance[1].round(4)*100))
     # plt.show()
